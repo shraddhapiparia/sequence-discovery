@@ -10,6 +10,7 @@ from keras.preprocessing import sequence
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.vis_utils import plot_model
 from keras.preprocessing.text import Tokenizer
+from sklearn.metrics import classification_report
 
 sentences = []
 vocab = []
@@ -18,6 +19,7 @@ xtrain = []
 ytrain = []
 xtest = []
 ytest = []
+y_test = []
 
 # Reading input data
 print "Reading training data"
@@ -77,6 +79,7 @@ with open('combined_testfile.txt','r') as test_file:
 	x8 = model.wv.vocab[lines[i+7].strip('\n')].index
 	xtest.append([x1,x2,x3,x4,x5,x6,x7])
 	ytest.append([x8])
+	y_test.append(x8)
 '''
 	for j in range(len(model.wv.vocab)):
 	    if model.wv.index2word[j] == lines[i].strip('\n'):
@@ -107,7 +110,7 @@ Y_train = tokenizer.sequences_to_matrix(ytrain,mode='binary')
 
 X_test = np.asarray(xtest)
 Y_test = tokenizer.sequences_to_matrix(ytest,mode='binary')
-
+y_test = np.asarray(y_test)
 #embedding_matrix = embedding_matrix[1:]
 #print "X_train is: ",X_train[0]#, ", Y_train is: ", Y_train'''
 
@@ -146,7 +149,7 @@ print ("shape of preds is ",preds.shape)
 print('Test score:', score[0])
 print('Test Accuracy:', score[1])
 print('Test Categorical accuracy:', score[2])
-
+print(classification_report(y_test,pred_classes, target_names=None))
 
 
 
